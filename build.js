@@ -10,7 +10,7 @@ const ctxContainer = createContainer()
 const outputDir = '.output'
 const clientOutputDir = join(outputDir, 'client')
 
-ctxContainer.createContext('backend', {
+ctxContainer.createContext('server', {
   entryPoints: ['server/index.js'],
   jsx: 'automatic',
   jsxImportSource: 'preact',
@@ -71,7 +71,7 @@ if (process.argv.slice(2).includes('-w')) {
       })
       pid = proc.pid
       await writeMetafile({
-        backend: result.backend.metafile,
+        backend: result.server.metafile,
         client: result.client.metafile,
       })
     },
@@ -79,7 +79,7 @@ if (process.argv.slice(2).includes('-w')) {
 } else {
   const result = await ctxContainer.build()
   await writeMetafile({
-    backend: result.backend.metafile,
+    backend: result.server.metafile,
     client: result.client.metafile,
   })
 }
