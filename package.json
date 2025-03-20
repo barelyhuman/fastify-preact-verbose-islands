@@ -5,7 +5,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node build.js -w"
+    "dev": "node build.js -w",
+    "build": "node build.js",
+    "start": "node .output/index.js",
+    "fix":"prettier --write ."
   },
   "keywords": [],
   "author": "",
