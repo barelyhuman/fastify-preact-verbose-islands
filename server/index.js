@@ -6,6 +6,8 @@ import { fileURLToPath } from 'url'
 import { About } from '../shared/components/About'
 import { Counter } from '../shared/components/Counter'
 import { BaseLayout } from './layout/base.jsx'
+import fastifyCookie from '@fastify/cookie'
+import fastifyMultipart from '@fastify/multipart'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -21,6 +23,9 @@ if (process.stdout.isTTY) {
 const app = fastify({
   logger: loggerOptions,
 })
+
+app.register(fastifyCookie)
+app.register(fastifyMultipart)
 
 app.register(fastifyStatic, {
   root: path.join(__dirname, './client'),
