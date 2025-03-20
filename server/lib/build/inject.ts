@@ -1,24 +1,25 @@
-import { readFile } from 'node:fs/promises'
-import { join, dirname } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { join } from 'path'
+import { normalizeRootUrl } from '../url.js'
+import { getMetafile } from './get-metafile.js'
 
-// We consider the output path of this being right next to your `index.js` from the
-// output folder and so it's something we can read directly
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const metafile = JSON.parse(
-  await readFile(join(__dirname, './meta.json'), 'utf8')
-)
+const metafile = await getMetafile()
 
 export function inject(inputFile: string, prefix = '/client') {
-  if (!metafile.client.inputs[inputFile]) {
+  const inputExt = ['.js', '.tsx', '.jsx'].find(d => {
+    return metafile.client.inputs[inputFile + d]
+  })
+
+  const inputFileToUse = inputFile + inputExt
+
+  if (!inputFileToUse) {
     throw new Error(
-      `[inject] the requested ${inputFile} isn't part of the build meta and cannot be inject`
+      `[inject] the requested ${inputFile} isn't part of the build meta and cannot be injected`
     )
   }
 
   let matchedOutputPath
   for (let key in metafile.client.outputs) {
-    if (inputFile !== metafile.client.outputs[key].entryPoint) continue
+    if (inputFileToUse !== metafile.client.outputs[key].entryPoint) continue
     matchedOutputPath = key.replace(
       new RegExp(`^${metafile.clientOutputDir}`),
       ''
@@ -27,13 +28,9 @@ export function inject(inputFile: string, prefix = '/client') {
 
   if (!matchedOutputPath) {
     throw new Error(
-      `[inject] the requested ${inputFile} isn't part of the build meta and cannot be inject`
+      `[inject] the requested ${inputFileToUse} isn't part of the build meta and cannot be injected`
     )
   }
 
   return normalizeRootUrl(join(prefix, matchedOutputPath))
-}
-
-function normalizeRootUrl(url: string) {
-  return '/' + url.split('/').filter(Boolean).join('/')
 }

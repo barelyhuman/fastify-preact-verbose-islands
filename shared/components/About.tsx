@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'preact/hooks'
-import { createIslandComponent } from '../lib/islands/builder'
+import { createIslandComponent } from '../lib/islands/builder.tsx'
 
 export const About = createIslandComponent<{ name: string }, {}>(
   'island-about',
-  function ({ name }) {
+  function About({ name }) {
     const [time, setTime] = useState(new Date().toISOString())
     useEffect(() => {
       const id = setInterval(() => {

@@ -8,6 +8,7 @@ import { Counter } from '../shared/components/Counter'
 import { BaseLayout } from './layout/base.jsx'
 import fastifyCookie from '@fastify/cookie'
 import fastifyMultipart from '@fastify/multipart'
+import { getMetafile } from './lib/build/get-metafile'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -30,6 +31,10 @@ app.register(fastifyMultipart)
 app.register(fastifyStatic, {
   root: path.join(__dirname, './client'),
   prefix: '/client',
+})
+
+app.get('/_meta', async (request, reply) => {
+  return getMetafile()
 })
 
 app.get('/health', async (request, reply) => {
