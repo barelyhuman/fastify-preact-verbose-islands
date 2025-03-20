@@ -1,2 +1,2 @@
 // register islands to mount on page
-import "../../shared/components/Counter";
+import '../../shared/components/Counter'
