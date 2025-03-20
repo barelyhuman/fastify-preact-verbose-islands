@@ -66,7 +66,7 @@ if (process.argv.slice(2).includes('-w')) {
       if (pid) {
         process.kill(pid)
       }
-      const proc = spawn('node', [`${outputDir}/index.js`], {
+      const proc = spawn(process.execPath, [`${outputDir}/index.js`], {
         stdio: 'inherit',
       })
       pid = proc.pid
