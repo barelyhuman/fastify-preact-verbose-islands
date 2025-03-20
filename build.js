@@ -19,6 +19,9 @@ ctxContainer.createContext('server', {
   loader: {
     '.js': 'jsx',
   },
+  define: {
+    'import.meta.env.CLIENT': JSON.stringify(false),
+  },
   platform: 'node',
   format: 'esm',
   outdir: outputDir,
@@ -27,13 +30,16 @@ ctxContainer.createContext('server', {
 
 ctxContainer.createContext('client', {
   entryPoints: (
-    await glob('./pages/**/*.{js,jsx,ts,tsx}', {
-      cwd: 'client',
+    await glob('./components/**/*.{js,jsx,ts,tsx}', {
+      cwd: 'shared',
     })
-  ).map(d => join('client', d)),
+  ).map(d => join('shared', d)),
   entryNames: '[dir]/[name]-[hash]',
-  outbase: 'client',
+  outbase: 'shared',
   metafile: true,
+  define: {
+    'import.meta.env.CLIENT': JSON.stringify(true),
+  },
   treeShaking: true,
   splitting: true,
   jsx: 'automatic',
