@@ -12,7 +12,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "packageManager": "pnpm@10.5.2",
   "dependencies": {
     "@fastify/cookie": "^11.0.2",
